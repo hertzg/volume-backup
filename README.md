@@ -12,11 +12,11 @@ This avoids mounting a second backup volume and allows to redirect it to a file,
 
 Syntax:
 
-    docker run -v [volume-name]:/volume --rm loomchild/volume-backup backup - > [archive-name]
+    docker run -v [volume-name]:/volume --rm hertzg/volume-backup backup - > [archive-name]
 
 For example:
 
-    docker run -v some_volume:/volume --rm loomchild/volume-backup backup - > some_archive.tar.bz2
+    docker run -v some_volume:/volume --rm hertzg/volume-backup backup - > some_archive.tar.bz2
 
 will archive volume named `some_volume` to `some_archive.tar.bz2` archive file.
 
@@ -26,11 +26,11 @@ will archive volume named `some_volume` to `some_archive.tar.bz2` archive file.
 
 Syntax:
 
-    docker run -v [volume-name]:/volume -v [output-dir]:/backup --rm loomchild/volume-backup backup [archive-name]
+    docker run -v [volume-name]:/volume -v [output-dir]:/backup --rm hertzg/volume-backup backup [archive-name]
 
 For example:
 
-    docker run -v some_volume:/volume -v /tmp:/backup --rm loomchild/volume-backup backup some_archive
+    docker run -v some_volume:/volume -v /tmp:/backup --rm hertzg/volume-backup backup some_archive
 
 will archive volume named `some_volume` to `/tmp/some_archive.tar.bz2` archive file.
 
@@ -46,11 +46,11 @@ This avoids mounting a second backup volume.
 
 Syntax:
 
-    cat [archive-name] | docker run -i -v [volume-name]:/volume --rm loomchild/volume-backup restore -
+    cat [archive-name] | docker run -i -v [volume-name]:/volume --rm hertzg/volume-backup restore -
 
 For example:
 
-    cat some_archive.tar.bz2 | docker run -i -v some_volume:/volume --rm loomchild/volume-backup restore -
+    cat some_archive.tar.bz2 | docker run -i -v some_volume:/volume --rm hertzg/volume-backup restore -
 
 will clean and restore volume named `some_volume` from `some_archive.tar.bz2` archive file.
 
@@ -58,11 +58,11 @@ will clean and restore volume named `some_volume` from `some_archive.tar.bz2` ar
 
 Syntax:
 
-    docker run -v [volume-name]:/volume -v [output-dir]:/backup --rm loomchild/volume-backup restore [archive-name]
+    docker run -v [volume-name]:/volume -v [output-dir]:/backup --rm hertzg/volume-backup restore [archive-name]
 
 For example:
 
-    docker run -v some_volume:/volume -v /tmp:/backup --rm loomchild/volume-backup restore some_archive
+    docker run -v some_volume:/volume -v /tmp:/backup --rm hertzg/volume-backup restore some_archive
 
 will clean and restore volume named `some_volume` from `/tmp/some_archive.tar.bz2` archive file.
 
@@ -72,21 +72,21 @@ One good example of how you can use the output to stdout would be directly migra
 
 Syntax:
 
-    docker run -v [volume-name]:/volume --rm loomchild/volume-backup backup - |\
-         ssh [receiver] docker run -i -v [volume-name]:/volume --rm loomchild/volume-backup restore -
+    docker run -v [volume-name]:/volume --rm hertzg/volume-backup backup - |\
+         ssh [receiver] docker run -i -v [volume-name]:/volume --rm hertzg/volume-backup restore -
 
 **Note**: In case there are no traffic limitations between the hosts you can trade CPU time for bandwidth by turning off compression as shown in the example below.
 
 For example:
 
-    docker run -v some_volume:/volume --rm loomchild/volume-backup backup -c none - |\
-         ssh user@new.machine docker run -i -v some_volume:/volume --rm loomchild/volume-backup restore -c none -
+    docker run -v some_volume:/volume --rm hertzg/volume-backup backup -c none - |\
+         ssh user@new.machine docker run -i -v some_volume:/volume --rm hertzg/volume-backup restore -c none -
     
 ## Miscellaneous
 
 1. Upgrade / update volume-backup
     ```
-    docker pull loomchild/volume-backup
+    docker pull hertzg/volume-backup
     ```
 
 1. Find all containers using a volume (to stop them before backing-up)
@@ -96,14 +96,14 @@ For example:
 
 1. Exclude some files from the backup and send the archive to stdout
     ```
-    docker run -v [volume-name]:/volume --rm loomchild/volume-backup backup -e [excluded-glob] - > [archive-name]
+    docker run -v [volume-name]:/volume --rm hertzg/volume-backup backup -e [excluded-glob] - > [archive-name]
     ```
 
 1. Use different compression algorithm for better performance
     ```
-    docker run -v [volume-name]:/volume --rm loomchild/volume-backup backup -c gz - > [archive-name]
+    docker run -v [volume-name]:/volume --rm hertzg/volume-backup backup -c gz - > [archive-name]
     ```
 1. Show simple progress indicator using verbose `-v` flag (works both for backup and restore)
     ```
-    docker run -v [volume-name]:/volume --rm loomchild/volume-backup backup -v > [archive-name]
+    docker run -v [volume-name]:/volume --rm hertzg/volume-backup backup -v > [archive-name]
     ```
